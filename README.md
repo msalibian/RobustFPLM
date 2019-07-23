@@ -4,6 +4,8 @@
 This repository contains code to compute the robust MM-estimators 
 for Functional Partial Linear models in Boente, Salibian-Barrera, Vena (2019).
 
+Original code by [Pablo Vena](https://github.com/anevolbap).
+
 ### Tecator example
 Because the regression model of the Tecator data includes an 
 interaction between the non-parametric 
