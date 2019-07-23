@@ -3,114 +3,52 @@
 ##
 
 library('robustbase') # lmrob
+source('FPLM-Bsplines-functions.R')
 
 ## Load data
 library(fda.usc)
-datos <- data(tecator)
-absorp <- tecator$absorp.fdata
-## splines approximation to the second derivative
-absorp2 <- fdata.deriv(absorp,nderiv = 2)
+data(tecator)
+## Prepare training set
+y  <- tecator$y$Fat[1:155]
+u  <- tecator$y$Protein[1:155]
+ab <- tecator$absorp.fdata
+t  <- ab$argvals
+x  <- ab$data[1:155,]
 
-## Load the necessary functions
-source('tecator-specific-functions.R')
-
-source('FPLM-Bsplines-functions.R')
-
-## Model: fat = < beta, absorp2> + water * eta(protein)
-## splines dimension selection criterion
-criterio <- 'bic1'
+## Model: fat = < beta, absorp> + eta(u)
+criterion <- 'bic1'
 ## range for possible dimension for splines for the regression component
-rango_beta <- 4:13
-
+range_beta <- 4:13
 ## range for possible dimension for splines for the non-parametric component
+range_eta <- 4:13
+norder <- 4
+# test  <- submuestra(156:215, covariable = 'd2', interac = TRUE)
 
-rango_eta <- 4:13
-
-## Create the training and test data sets
-## "interact" indicates whether the 2nd term in the model is
-## "water * g(protein)" (interac == TRUE) or
-## "g(protein)" (interac == FALSE)
-## covariable = 'd1' or 'd2' indicates which derivativate will
-## be returned
-##
-## This function is designed to work with the TECATOR data
-## as available in the package fda.usc
-
-train <- submuestra(1:155, covariable = 'd2', interac = TRUE)
-test  <- submuestra(156:215, covariable = 'd2', interac = TRUE)
-
+# MM estimator
 set.seed(124) # for lmrob()
-a <- FPLMBsplines(y = train$y, x = train$x, u = train$u,
-                  t = train$t, range_freq = 4:13,
-                  range_spl = 4:13, norder = 4, fLoss='lmrob', trace=TRUE)
+a <- FPLMBsplines(y = y, x = x, u = u, t = t, range_freq = range_beta,
+                  range_spl = range_eta, norder = norder, fLoss='lmrob', trace=TRUE)
+# M- (Huang)
+d <- FPLMBsplines(y = y, x = x, u = u, t = t, range_freq = range_beta,
+                  range_spl = range_eta, norder = norder, fLoss='huang', trace=TRUE)
+# LS
+b <- FPLMBsplines(y = y, x = x, u = u, t = t, range_freq = range_beta,
+                  range_spl = range_eta, norder = norder, fLoss='ls', trace=TRUE)
 
-
-d <- FPLMBsplines(y = train$y, x = train$x, u = train$u,
-                  t = train$t, range_freq = 4:13,
-                  range_spl = 4:13, norder = 4, fLoss='huang', trace=TRUE)
-
-
-# 
-# norder <- 4
-# spl_kn <- a$spl
-# kns    <- seq(min(train$u), max(train$u), length = spl_kn - norder + 2)
-# base   <- create.bspline.basis(rangeval = range(train$u),
-#                                norder = norder,
-#                                breaks = kns)
-# spl_uu <- getbasismatrix(train$u, base)
-# eta_est_rob <- spl_uu %*% a$fit$spl
-
-## Plot robust hat(eta)
-
-u_order <- order(train$u)
-plot(train$u[u_order], d$fit$eta_est[u_order], type = "l", xlab = "Protein", pch = 1,
-     lwd = 6,
-     col = "black", ylab = expression(hat(eta)),lty=1)
-
-# norder <- 4
-# spl_kn <- d$spl
-# kns    <- seq(min(train$u), max(train$u), length = spl_kn - norder + 2)
-# base   <- create.bspline.basis(rangeval = range(train$u),
-#                                norder = norder,
-#                                breaks = kns)
-# spl_uu <- getbasismatrix(train$u, base)
-# eta_est_huber <- spl_uu %*% d$fit$spl
-lines(train$u[u_order], a$fit$eta_est[u_order], lwd = 6, col = "tomato3")
-
-
-
+## Plot hat(eta)
+u_order <- order(u)
+ma <- max(rra <- c(a$fit$eta_est, b$fit$eta_est, d$fit$eta_est) )
+mi <- min(rra)
+plot(u[u_order], d$fit$eta_est[u_order], type = "l", xlab = "Protein", pch = 1,
+     lwd = 6, col = "black", ylab = expression(hat(eta)), lty=1, ylim=c(mi, ma))
+lines(u[u_order], a$fit$eta_est[u_order], lwd = 6, col = "tomato3")
+lines(u[u_order], b$fit$eta_est[u_order], lwd = 6, col = "skyblue3")
 
 ## Plot robust hat(beta)
-
-plot(train$t, a$fit$slope_fun, col = "black", lwd = 6,
-     type = "l", xlab = "Wavelength", ylab = expression(hat(beta)),
-     ylim = c(-6000, 6000),lty=1)
-
-
-b <- FPLMBsplines(y = train$y, x = train$x, u = train$u,
-                  t = train$t, range_freq = 4:13,
-                  range_spl = 4:13, norder = 4, fLoss='ls')
-
-# 
-# norder <- 4
-# spl_kn <- b$spl
-# kns    <- seq(min(train$u), max(train$u), length = spl_kn - norder + 2)
-# base   <- create.bspline.basis(rangeval = range(train$u),
-#                                norder = norder,
-#                                breaks = kns)
-# spl_uu <- getbasismatrix(train$u, base)
-# eta_est_ls <- spl_uu %*% b$fit$spl
-# 
-
-
-u_order <- order(train$u)
-plot(train$u[u_order], b$fit$eta_est[u_order], type = "l", xlab = "Protein", pch = 1,
-     lwd = 6,
-     col = "black", ylab = expression(hat(eta)),lty=1)
-lines(train$u[u_order], a$fit$eta_est[u_order], type='l', lwd=6, col='tomato3')
-lines(train$u[u_order], d$fit$eta_est[u_order], lwd = 6, col = "skyblue3")
-
-plot(train$t, b$fit$slope_fun, col = "black", lwd = 6,
-     type = "l", xlab = "Wavelength", ylab = expression(hat(beta)),
-     ylim = c(-6000, 6000),lty=1)
+ma <- max(rrb <- c(a$fit$slope_fun, b$fit$slope_fun, d$fit$slope_fun) )
+mi <- min(rrb)
+plot(t, a$fit$slope_fun, col = "black", lwd = 6,
+     type = "l", xlab = "Wavelength", ylab = expression(hat(beta)), lty=1, ylim=c(mi, ma))
+lines(t, d$fit$slope_fun, col = "tomato3", lwd = 6, lty=1)
+lines(t, b$fit$slope_fun, col = "skyblue3", lwd = 6, lty=1)
 
