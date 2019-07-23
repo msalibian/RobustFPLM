@@ -1,7 +1,7 @@
 # RobustFPLM
 ## Robust estimators for Functional Partial Linear Models 
 
-This respository contains code to compute the robust MM-estimators for Functional Partial Linear
+This repository contains code to compute the robust MM-estimators for Functional Partial Linear
 models in Boente, Salibian-Barrera, Vena (2019).
 
 Because the regression model of the Tecator data includes an interaction between the non-parametric 
