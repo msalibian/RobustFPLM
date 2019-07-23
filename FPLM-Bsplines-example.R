@@ -50,32 +50,32 @@ d <- FPLMBsplines(y = train$y, x = train$x, u = train$u,
                   range_spl = 4:13, norder = 4, fLoss='huang', trace=TRUE)
 
 
-
-norder <- 4
-spl_kn <- a$spl
-kns    <- seq(min(train$u), max(train$u), length = spl_kn - norder + 2)
-base   <- create.bspline.basis(rangeval = range(train$u),
-                               norder = norder,
-                               breaks = kns)
-spl_uu <- getbasismatrix(train$u, base)
-eta_est_rob <- spl_uu %*% a$fit$spl
+# 
+# norder <- 4
+# spl_kn <- a$spl
+# kns    <- seq(min(train$u), max(train$u), length = spl_kn - norder + 2)
+# base   <- create.bspline.basis(rangeval = range(train$u),
+#                                norder = norder,
+#                                breaks = kns)
+# spl_uu <- getbasismatrix(train$u, base)
+# eta_est_rob <- spl_uu %*% a$fit$spl
 
 ## Plot robust hat(eta)
 
 u_order <- order(train$u)
-plot(train$u[u_order], eta_est_rob[u_order], type = "l", xlab = "Protein", pch = 1,
+plot(train$u[u_order], d$fit$eta_est[u_order], type = "l", xlab = "Protein", pch = 1,
      lwd = 6,
      col = "black", ylab = expression(hat(eta)),lty=1)
 
-norder <- 4
-spl_kn <- d$spl
-kns    <- seq(min(train$u), max(train$u), length = spl_kn - norder + 2)
-base   <- create.bspline.basis(rangeval = range(train$u),
-                               norder = norder,
-                               breaks = kns)
-spl_uu <- getbasismatrix(train$u, base)
-eta_est_huber <- spl_uu %*% d$fit$spl
-lines(train$u[u_order], eta_est_huber[u_order], lwd = 6, col = "tomato3")
+# norder <- 4
+# spl_kn <- d$spl
+# kns    <- seq(min(train$u), max(train$u), length = spl_kn - norder + 2)
+# base   <- create.bspline.basis(rangeval = range(train$u),
+#                                norder = norder,
+#                                breaks = kns)
+# spl_uu <- getbasismatrix(train$u, base)
+# eta_est_huber <- spl_uu %*% d$fit$spl
+lines(train$u[u_order], a$fit$eta_est[u_order], lwd = 6, col = "tomato3")
 
 
 
@@ -91,24 +91,24 @@ b <- FPLMBsplines(y = train$y, x = train$x, u = train$u,
                   t = train$t, range_freq = 4:13,
                   range_spl = 4:13, norder = 4, fLoss='ls')
 
-
-norder <- 4
-spl_kn <- b$spl
-kns    <- seq(min(train$u), max(train$u), length = spl_kn - norder + 2)
-base   <- create.bspline.basis(rangeval = range(train$u),
-                               norder = norder,
-                               breaks = kns)
-spl_uu <- getbasismatrix(train$u, base)
-eta_est_ls <- spl_uu %*% b$fit$spl
-
+# 
+# norder <- 4
+# spl_kn <- b$spl
+# kns    <- seq(min(train$u), max(train$u), length = spl_kn - norder + 2)
+# base   <- create.bspline.basis(rangeval = range(train$u),
+#                                norder = norder,
+#                                breaks = kns)
+# spl_uu <- getbasismatrix(train$u, base)
+# eta_est_ls <- spl_uu %*% b$fit$spl
+# 
 
 
 u_order <- order(train$u)
-plot(train$u[u_order], eta_est_rob[u_order], type = "l", xlab = "Protein", pch = 1,
+plot(train$u[u_order], b$fit$eta_est[u_order], type = "l", xlab = "Protein", pch = 1,
      lwd = 6,
      col = "black", ylab = expression(hat(eta)),lty=1)
-lines(train$u[u_order], eta_est_ls[u_order], type='l', lwd=6, col='tomato3')
-lines(train$u[u_order], eta_est_huber[u_order], lwd = 6, col = "skyblue3")
+lines(train$u[u_order], a$fit$eta_est[u_order], type='l', lwd=6, col='tomato3')
+lines(train$u[u_order], d$fit$eta_est[u_order], lwd = 6, col = "skyblue3")
 
 plot(train$t, b$fit$slope_fun, col = "black", lwd = 6,
      type = "l", xlab = "Wavelength", ylab = expression(hat(beta)),
