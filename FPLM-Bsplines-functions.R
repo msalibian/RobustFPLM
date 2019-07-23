@@ -1,4 +1,6 @@
 
+# (c) Pablo Vena, 2019
+
 # library(Rcpp)                    # C++
 # library(RcppArmadillo)           # C++
 Rcpp::sourceCpp('huber.cpp')  # Huber without scale estimation
@@ -192,6 +194,14 @@ FPLMBsplines <- function (y, x, u, t, range_freq,
             if(trace) print(c('spl' = spl, 'freq' = freq, 'crit' = crt))
         }
     }
+    
+    kns    <- seq(min(u), max(u), length = spl_opt - norder + 2)
+    base   <- create.bspline.basis(rangeval = range(u),
+                                   norder = norder,
+                                   breaks = kns)
+    spl_uu <- getbasismatrix(u, base)
+    fit_opt$eta_est <- spl_uu %*% fit_opt$spl
+    
     return(list(fit = fit_opt, spl = spl_opt, freq = freq_opt,
                 u = u, t = t))
 }
