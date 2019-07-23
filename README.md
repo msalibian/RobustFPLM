@@ -17,10 +17,10 @@ and computing the 2nd derivatives
 of the absorbance spectra) requires special care. 
 Thus, we prepared a suite of specific 
 functions and scripts to reproduce our analysis in the paper. 
-See (here)[tecator-specific-functions.R] and (here)[script-TECATOR.R].
+See [here](tecator-specific-functions.R) and [here](script-TECATOR.R).
 
 ### General code
 Code to fit the usual Functional Partial linear Model 
-(`y = <X, beta> + g(z) + e`) is (here)[FPLM-Bsplines-functions.R]. A 
+(`y = <X, beta> + g(z) + e`) is [here](FPLM-Bsplines-functions.R). A 
 simple step-by-step example can be found 
-(here)[FPLM-Bsplines-example.R]. 
+[here](FPLM-Bsplines-example.R). 
