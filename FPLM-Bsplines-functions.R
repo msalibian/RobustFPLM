@@ -201,7 +201,8 @@ FPLMBsplines <- function (y, x, u, t, range_freq,
                                    breaks = kns)
     spl_uu <- getbasismatrix(u, base)
     fit_opt$eta_est <- spl_uu %*% fit_opt$spl
-
+    dt <- min(diff(t))
+    fit_opt$fitted <- as.vector( x %*% fit_opt$slope_fun * dt + fit_opt$eta_est )
     return(list(fit = fit_opt, spl = spl_opt, freq = freq_opt,
                 u = u, t = t))
 }
