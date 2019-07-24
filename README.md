@@ -101,13 +101,13 @@ non-parametric component:
 u_order <- order(u)
 ma <- max(rra <- c(a$fit$eta_est, b$fit$eta_est, d$fit$eta_est))
 mi <- min(rra)
-plot(u[u_order], d$fit$eta_est[u_order], type = "l", xlab = "Protein", pch = 1, 
+plot(u[u_order], a$fit$eta_est[u_order], type = "l", xlab = "Protein", pch = 1, 
     lwd = 6, col = "black", ylab = expression(hat(eta)), lty = 1, ylim = c(mi, 
         ma))
-lines(u[u_order], a$fit$eta_est[u_order], lwd = 6, col = "tomato3")
+lines(u[u_order], d$fit$eta_est[u_order], lwd = 6, col = "tomato3")
 lines(u[u_order], b$fit$eta_est[u_order], lwd = 6, col = "skyblue3")
 legend("bottomright", lty = 1, lwd = 3, col = c("black", "tomato3", "skyblue3"), 
-    legend = c("M", "MM", "LS"))
+    legend = c("MM", "M", "LS"))
 ```
 
 ![](README_files/figure-gfm/ploteta-1.png)<!-- -->
@@ -123,7 +123,7 @@ plot(t, a$fit$slope_fun, col = "black", lwd = 6, type = "l", xlab = "Wavelength"
 lines(t, d$fit$slope_fun, col = "tomato3", lwd = 6, lty = 1)
 lines(t, b$fit$slope_fun, col = "skyblue3", lwd = 6, lty = 1)
 legend("bottom", lty = 1, lwd = 3, col = c("black", "tomato3", "skyblue3"), 
-    legend = c("M", "MM", "LS"))
+    legend = c("MM", "M", "LS"))
 ```
 
 ![](README_files/figure-gfm/plotbeta-1.png)<!-- -->
