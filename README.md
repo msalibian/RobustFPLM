@@ -1,7 +1,7 @@
 Robust estimators for Functional Partial Linear Models
 ================
 Matias Salibian-Barrera
-2019-07-23
+2019-07-24
 
 This repository contains `R` code to compute the robust MM-estimators
 for Functional Partial Linear models in Boente, Salibian-Barrera, Vena
@@ -28,32 +28,40 @@ available from the [fda.usc](https://cran.r-project.org/package=fda.usc)
 package.
 
 The main function in our Robust FPLM suite of functions is
-`FPLM-Bsplines()`. Its arguments include: `y`: the vector of scalar
-responses; `x`: a matrix of the functional covariates, where each row
-contains each function evaluated on a (common) grid; `t`: the grid over
-which the functional covariates were evaluated; `u`: the values of the
-explanatory variable that enters the model non-parametrically;
-`range_freq`: a vector of B-spline basis sizes to try for the functional
-regression coefficient; `range_spl`: a vector of B-spline basis sizes to
-try for the non-parametric component; `norder`: the order of the
-B-splines; `fLoss`: the loss function to be minimized; `trace`: a
-logical argument indicating whether partial results are printed.
+`FPLM-Bsplines()`. Its arguments include:
 
-We load our functions. Note that to compute the MM-robust estimators we
-need the [robustbase](https://cran.r-project.org/package=robustbase)
-package.
+  - `y`: the vector of scalar responses;
+  - `x`: a matrix of the functional covariates, where each row contains
+    the functions evaluated on a (common) grid; `t`: the grid over which
+    the functional covariates were evaluated;
+  - `u`: the values of the explanatory variable that enters the model
+    non-parametrically;
+  - `range_freq`: a vector of B-spline basis sizes to try for the
+    functional regression coefficient;
+  - `range_spl`: a vector of B-spline basis sizes to try for the
+    non-parametric component;
+  - `norder`: the order of the B-splines;
+  - `fLoss`: the loss function to be minimized; and
+  - `trace`: a logical argument indicating whether partial results are
+    printed.
+
+We load our functions from the file `FPLM-Bsplines-functions.R`. Note
+that to compute the robust estimators for the FPLM model we need the
+[robustbase](https://cran.r-project.org/package=robustbase) package.
 
 ``` r
 library('robustbase') # lmrob
 source('FPLM-Bsplines-functions.R')
 ```
 
-The following lines load the data, and extract the response vector (y),
-the matrix of functional explanatory variables (x) and the vector (u) of
-the covariate that is modelled non-parametrically.
+Next, we load the `tecator` data from the `fda.usc` package and extract
+the response vector of fat content, the matrix of functional explanatory
+functional variables (the second derivatives of the absorption spectra),
+the grid (t) on which the x’s were evaluated, and the vector (u) of
+protein values (the covariate that is modelled non-parametrically). The
+model is `fat = < beta, absorp2> + eta(u) + e`.
 
 ``` r
-## Load data
 library(fda.usc)
 data(tecator)
 absorp2 <- fdata.deriv(tecator$absorp.fdata, nderiv = 2)
@@ -61,7 +69,6 @@ y  <- tecator$y$Fat[1:155]
 u  <- tecator$y$Protein[1:155]
 t  <- absorp2$argvals
 x  <- absorp2$data[1:155,]
-## Model: fat = < beta, absorp2> + eta(u) + e
 ```
 
 We consider B-splines of order 4, with bases sizes between 4 and 13, and
