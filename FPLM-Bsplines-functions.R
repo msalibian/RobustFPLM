@@ -19,20 +19,20 @@ minimize <- function (yy, xx_coef, uu, spl_kn, freq, fLoss, norder, pars,
                                                 k.max       = 2e3,       # 200
                                                 maxit.scale = 2e3,       # 200
                                                 max.it      = 2e3)) {
-  
+
   ## Initialize
   cv  <- tr <- aicM <- NA
-  
+
   ## B-spline basis
   kns    <- seq(min(uu), max(uu), length = spl_kn - norder + 2)
   base   <- create.bspline.basis(rangeval = range(uu),
                                  norder = norder,
                                  breaks = kns)
   spl_uu <- getbasismatrix(uu, base)
-  
+
   ## Design matrix
   X <- cbind(xx_coef, spl_uu)
-  
+
   ## Minimization menu
   switch(fLoss,
          ls = {
@@ -104,14 +104,14 @@ minimize <- function (yy, xx_coef, uu, spl_kn, freq, fLoss, norder, pars,
          },
          stop('Invalid fLoss.')
   )
-  
+
   ## Estimated parameters
   # intercept <- cf[1]
   # slope_par <- cf[2:(freq + 1)]
   # spl_par <- cf[-(1:(freq + 1))]
   spl_par   <- cf[-(1:freq)]
   slope_par <- cf[  1:freq ]
-  
+
   return(list(spl = spl_par, slope = slope_par, #intercept = intercept,
               value = vv, scale = ss, conv = cv, traza = tr, matias = aicM))
 }
@@ -146,7 +146,7 @@ FPLMBsplines_fit <- function (y, x, u, t, freq, spl,
 }
 
 goodness <- function(nn, scl, val, spl,freq, criterion){
-    switch(criterion, 
+    switch(criterion,
            hic     = log(scl^2 * val/ nn) + spl * log(nn) / (2 * nn) + 2 * freq / nn,
            hic2    = log(scl^2 * val/ nn) + freq * log(nn) / (2 * nn) + 2 * spl / nn,,
            hicGR2  = log(scl^2) + val / nn + freq * log(nn) / (2 * nn) + 2 * spl / nn,
@@ -194,14 +194,14 @@ FPLMBsplines <- function (y, x, u, t, range_freq,
             if(trace) print(c('spl' = spl, 'freq' = freq, 'crit' = crt))
         }
     }
-    
+
     kns    <- seq(min(u), max(u), length = spl_opt - norder + 2)
     base   <- create.bspline.basis(rangeval = range(u),
                                    norder = norder,
                                    breaks = kns)
     spl_uu <- getbasismatrix(u, base)
     fit_opt$eta_est <- spl_uu %*% fit_opt$spl
-    
+
     return(list(fit = fit_opt, spl = spl_opt, freq = freq_opt,
                 u = u, t = t))
 }
@@ -222,10 +222,10 @@ FPLMBsplines <- function (y, x, u, t, range_freq,
 #     return(list(verdad = obs$y, predicho = intercept + funcional +
 #                                     noparam))
 # }
-# 
-# 
+#
+#
 # residuos <- function(modelo, datos) {
-# 
+#
 #     ## Residuos
 #     res <- t(sapply(1:datos$n, function (cual) {
 #         obs_new <- list(y       = datos$y[cual],
@@ -238,7 +238,7 @@ FPLMBsplines <- function (y, x, u, t, range_freq,
 #                             u         = modelo$u,
 #                             eta_coef  = modelo$fit$spl))
 #     }))
-# 
+#
 #     return(res)
 # }
 
@@ -253,11 +253,11 @@ FPLMBsplines <- function (y, x, u, t, range_freq,
 #     } else {
 #         ret <- list(MSPE = mean(res2) / mm2,
 #                     MedSPE = median(res2) / mm2)
-# 
+#
 #     }
 #     return(ret)
 # }
-# 
+#
 # performance_trim <- function (test, res, out_test) {
 #     mm2 <- mad(test$y)^2
 #     res2 <- res^2
@@ -269,15 +269,15 @@ FPLMBsplines <- function (y, x, u, t, range_freq,
 #     } else {
 #         ret <- list(MSPE = mean(res2) / mm2,
 #                     MSPE_trim = media_trim(res2) / mm2)
-# 
+#
 #     }
 #     return(ret)
 # }
-# 
+#
 # media_trim <- function(a, alpha=0.1) {
 # 	n <- length(a)
 # 	n0 <- n - floor( alpha * n )
 # 	return( mean( (sort(a))[1:n0] ) )
 # }
-# 
-# 
+#
+#
