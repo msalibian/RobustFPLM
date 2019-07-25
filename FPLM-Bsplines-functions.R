@@ -172,12 +172,13 @@ goodness <- function(nn, scl, val, spl,freq, criterion){
 ##        valid options: 'ls', 'lad', 'lmrob', 'huang'
 
 
-FPLMBsplines <- function (y, x, u, t, range_freq,
-                           range_spl, norder, fLoss, criterion = 'bic1',
+FPLMBsplines <- function (y, x, u, t, range_freq = (floor(min(n^(1/5), norder)):floor(2*(norder+n^(1/5)))),
+                          range_spl= (floor(min(n^(1/5), norder)):floor(2*(norder+n^(1/5)))), 
+                          norder, fLoss, criterion = 'bic1',
                           trace=FALSE) {
 
     opt <- spl_opt <- freq_opt <- fit_opt <- Inf
-
+    n <- length(y)
     for(spl in range_spl) {
         for(freq in range_freq) {
             fit <- FPLMBsplines_fit(y, x, u, t, freq, spl, norder, fLoss)
