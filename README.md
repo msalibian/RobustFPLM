@@ -1,7 +1,7 @@
 Robust estimators for Functional Partial Linear Models
 ================
 Matias Salibian-Barrera
-2019-07-24
+2019-07-25
 
 This repository contains `R` code to compute the robust MM-estimators
 for Functional Partial Linear models in Boente, Salibian-Barrera, Vena
@@ -32,8 +32,8 @@ The main function in our Robust FPLM suite of functions is
 
   - `y`: the vector of scalar responses;
   - `x`: a matrix of the functional covariates, where each row contains
-    the functions evaluated on a (common) grid; `t`: the grid over which
-    the functional covariates were evaluated;
+    the functions evaluated on a (common) grid;
+  - `t`: the grid over which the functional covariates were evaluated;
   - `u`: the values of the explanatory variable that enters the model
     non-parametrically;
   - `range_freq`: a vector of B-spline basis sizes to try for the

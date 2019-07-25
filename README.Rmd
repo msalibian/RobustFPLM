@@ -41,7 +41,8 @@ is `FPLM-Bsplines()`. Its arguments include:
 - `y`: the vector of scalar responses;
 - `x`: a matrix of  the functional covariates, 
 where each row contains the functions evaluated 
-on a (common) grid; `t`: the grid over which 
+on a (common) grid; 
+- `t`: the grid over which 
 the functional covariates were evaluated; 
 - `u`: the values of the explanatory variable 
 that enters the model non-parametrically;
