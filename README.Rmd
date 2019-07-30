@@ -6,7 +6,7 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, tidy=TRUE)
 ```
 
 This repository contains `R` code to compute the robust MM-estimators 
@@ -72,7 +72,7 @@ the grid (t) on which the x's were evaluated,
 and the vector (u) of protein values (the covariate that 
 is modelled non-parametrically). 
 The model is
-`fat = < beta, absorp2> + eta(u) + e`.
+`fat = < beta, absorp2> + eta(protein) + e`.
 ```{r loaddata, message=FALSE, warning=FALSE}
 library(fda.usc)
 data(tecator)
@@ -127,3 +127,53 @@ lines(t, d$fit$slope_fun, col = "tomato3", lwd = 6, lty=1)
 lines(t, b$fit$slope_fun, col = "skyblue3", lwd = 6, lty=1)
 legend('bottom', lty=1, lwd=3, col=c('black', 'tomato3', 'skyblue3'), legend=c('MM', 'M', 'LS'))
 ```
+
+We can now compare the fit obtained with the robust estimator to that 
+obtained with the ``cleaned'' data, that is: we remove potential outliers
+and fit the LS estimator to this ``clean'' data. 
+To identify possibly atypical observations, we look at the residuals from the
+robust fit, and flag those with large residuals (in absolute value):
+```{r residuals, fig.width=5, fig.height=5, tidy=TRUE}
+res <- y - a$fit$fitted
+names(res) <- 1:length(res)
+outl <- as.numeric(names(boxplot(res, col='gray70')$out))
+```
+
+We remove these suspect observations and re-fit the M- and LS-estimators
+on the remaining ``clean'' data: 
+```{r refit}
+y2  <- y[ -outl ]
+u2  <- u[ -outl ]
+x2  <- x[ -outl,]
+d2 <- FPLMBsplines(y = y2, x = x2, u = u2, t = t, range_freq = range_beta, range_spl = range_eta, norder = norder, fLoss='huang', trace=FALSE)
+
+b2 <- FPLMBsplines(y = y2, x = x2, u = u2, t = t, range_freq = range_beta, range_spl = range_eta, norder = norder, fLoss='ls', trace=FALSE)
+```
+We now plot the robust estimator computed earlier on the whole data 
+set, and the M- and LS-estimators re-computed on the ``cleaned'' data:
+```{r ploteta2, fig.width=5, fig.height=5, tidy=TRUE}
+u2_order <- order(u2)
+ma <- max(rra <- c(a$fit$eta_est, b$fit$eta_est, d$fit$eta_est) )
+mi <- min(rra)
+plot(u[u_order], a$fit$eta_est[u_order], type = "l", xlab = "Protein", pch = 1, lwd = 6, col = "black", ylab = expression(hat(eta)), lty=1, ylim=c(mi, ma))
+lines(u2[u2_order], d2$fit$eta_est[u2_order], lwd = 6, col = "tomato3")
+lines(u2[u2_order], b2$fit$eta_est[u2_order], lwd = 3, col = "skyblue3")
+legend('bottomright', lty=1, lwd=3, col=c('black', 'tomato3', 'skyblue3'), legend=c('MM', 'M2', 'LS2'))
+```
+
+and
+```{r plotbeta2, fig.width=5, fig.height=5, tidy=TRUE}
+ma <- max(rrb <- c(a$fit$slope_fun, b$fit$slope_fun, d$fit$slope_fun) )
+mi <- min(rrb)
+plot(t, a$fit$slope_fun, col = "black", lwd = 6, type = "l", xlab = "Wavelength", ylab = expression(hat(beta)), lty=1, ylim=c(mi, ma))
+lines(t, d2$fit$slope_fun, col = "tomato3", lwd = 6, lty=1)
+lines(t, b2$fit$slope_fun, col = "skyblue3", lwd = 3, lty=1)
+legend('bottom', lty=1, lwd=3, col=c('black', 'tomato3', 'skyblue3'), legend=c('MM', 'M2', 'LS2'))
+```
+
+Note that all estimators are now essentially identical to each other. 
+In other words, we see that the 
+robust estimator results in a fit that is intuitively equivalent to using
+LS on a ``cleaned'' data set. However, the robust procedure accomplishes this
+automatically, and does not involve diagnostic plots or manually
+removing observations from the data set. 

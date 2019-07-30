@@ -1,7 +1,7 @@
 Robust estimators for Functional Partial Linear Models
 ================
 Matias Salibian-Barrera
-2019-07-25
+2019-07-30
 
 This repository contains `R` code to compute the robust MM-estimators
 for Functional Partial Linear models in Boente, Salibian-Barrera, Vena
@@ -50,8 +50,8 @@ that to compute the robust estimators for the FPLM model we need the
 [robustbase](https://cran.r-project.org/package=robustbase) package.
 
 ``` r
-library('robustbase') # lmrob
-source('FPLM-Bsplines-functions.R')
+library("robustbase")  # lmrob
+source("FPLM-Bsplines-functions.R")
 ```
 
 Next, we load the `tecator` data from the `fda.usc` package and extract
@@ -59,16 +59,16 @@ the response vector of fat content, the matrix of functional explanatory
 functional variables (the second derivatives of the absorption spectra),
 the grid (t) on which the x’s were evaluated, and the vector (u) of
 protein values (the covariate that is modelled non-parametrically). The
-model is `fat = < beta, absorp2> + eta(u) + e`.
+model is `fat = < beta, absorp2> + eta(protein) + e`.
 
 ``` r
 library(fda.usc)
 data(tecator)
 absorp2 <- fdata.deriv(tecator$absorp.fdata, nderiv = 2)
-y  <- tecator$y$Fat[1:155]
-u  <- tecator$y$Protein[1:155]
-t  <- absorp2$argvals
-x  <- absorp2$data[1:155,]
+y <- tecator$y$Fat[1:155]
+u <- tecator$y$Protein[1:155]
+t <- absorp2$argvals
+x <- absorp2$data[1:155, ]
 ```
 
 We consider B-splines of order 4, with bases sizes between 4 and 13, and
@@ -79,7 +79,7 @@ dimensions for each smooth component
 norder <- 4
 range_beta <- 4:13
 range_eta <- 4:13
-criterion <- 'bic1'
+criterion <- "bic1"
 ```
 
 Now we fit the robust MM estimator:
@@ -134,3 +134,71 @@ legend("bottom", lty = 1, lwd = 3, col = c("black", "tomato3", "skyblue3"),
 ```
 
 ![](README_files/figure-gfm/plotbeta-1.png)<!-- -->
+
+We can now compare the fit obtained with the robust estimator to that
+obtained with the `cleaned'' data, that is: we remove potential outliers
+and fit the LS estimator to this`clean’’ data. To identify possibly
+atypical observations, we look at the residuals from the robust fit, and
+flag those with large residuals (in absolute value):
+
+``` r
+res <- y - a$fit$fitted
+names(res) <- 1:length(res)
+outl <- as.numeric(names(boxplot(res, col = "gray70")$out))
+```
+
+![](README_files/figure-gfm/residuals-1.png)<!-- -->
+
+We remove these suspect observations and re-fit the M- and LS-estimators
+on the remaining \`\`clean’’ data:
+
+``` r
+y2 <- y[-outl]
+u2 <- u[-outl]
+x2 <- x[-outl, ]
+d2 <- FPLMBsplines(y = y2, x = x2, u = u2, t = t, range_freq = range_beta, range_spl = range_eta, 
+    norder = norder, fLoss = "huang", trace = FALSE)
+
+b2 <- FPLMBsplines(y = y2, x = x2, u = u2, t = t, range_freq = range_beta, range_spl = range_eta, 
+    norder = norder, fLoss = "ls", trace = FALSE)
+```
+
+We now plot the robust estimator computed earlier on the whole data set,
+and the M- and LS-estimators re-computed on the \`\`cleaned’’ data:
+
+``` r
+u2_order <- order(u2)
+ma <- max(rra <- c(a$fit$eta_est, b$fit$eta_est, d$fit$eta_est))
+mi <- min(rra)
+plot(u[u_order], a$fit$eta_est[u_order], type = "l", xlab = "Protein", pch = 1, 
+    lwd = 6, col = "black", ylab = expression(hat(eta)), lty = 1, ylim = c(mi, 
+        ma))
+lines(u2[u2_order], d2$fit$eta_est[u2_order], lwd = 6, col = "tomato3")
+lines(u2[u2_order], b2$fit$eta_est[u2_order], lwd = 3, col = "skyblue3")
+legend("bottomright", lty = 1, lwd = 3, col = c("black", "tomato3", "skyblue3"), 
+    legend = c("MM", "M2", "LS2"))
+```
+
+![](README_files/figure-gfm/ploteta2-1.png)<!-- -->
+
+and
+
+``` r
+ma <- max(rrb <- c(a$fit$slope_fun, b$fit$slope_fun, d$fit$slope_fun))
+mi <- min(rrb)
+plot(t, a$fit$slope_fun, col = "black", lwd = 6, type = "l", xlab = "Wavelength", 
+    ylab = expression(hat(beta)), lty = 1, ylim = c(mi, ma))
+lines(t, d2$fit$slope_fun, col = "tomato3", lwd = 6, lty = 1)
+lines(t, b2$fit$slope_fun, col = "skyblue3", lwd = 3, lty = 1)
+legend("bottom", lty = 1, lwd = 3, col = c("black", "tomato3", "skyblue3"), 
+    legend = c("MM", "M2", "LS2"))
+```
+
+![](README_files/figure-gfm/plotbeta2-1.png)<!-- -->
+
+Note that all estimators are now essentially identical to each other. In
+other words, we see that the robust estimator results in a fit that is
+intuitively equivalent to using LS on a \`\`cleaned’’ data set. However,
+the robust procedure accomplishes this automatically, and does not
+involve diagnostic plots or manually removing observations from the data
+set.
