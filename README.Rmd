@@ -141,7 +141,7 @@ outl <- as.numeric(names(boxplot(res, col='gray70')$out))
 
 We remove these suspect observations and re-fit the M- and LS-estimators
 on the remaining ``clean'' data: 
-```{r refit}
+```{r refit, cache=TRUE}
 y2  <- y[ -outl ]
 u2  <- u[ -outl ]
 x2  <- x[ -outl,]
