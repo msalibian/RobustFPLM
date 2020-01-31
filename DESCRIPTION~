@@ -1,0 +1,20 @@
+Package: RobustFPLM
+Title: Robust estimators for Functional Partial Linear Models
+Version: 0.1
+Authors@R: c(person("Pablo", "Vena", email = "pvena@udesa.edu.ar",
+    role = c("aut", "cre")),
+    person("Matias", "Salibian-Barrera", email = "msalibian@stat.ubc.ca",
+    role = c("aut")))
+Description: This repository contains R code to compute the robust
+    MM-estimators for Functional Partial Linear models in Boente,
+    Salibian-Barrera, Vena (2019).
+Depends: R (>= 3.1.0), lmrob, fda
+Suggests: fda.usc
+License: GPL-3
+Encoding: UTF-8
+RoxygenNote: 7.0.2
+LinkingTo: 
+    Rcpp,
+    RcppArmadillo
+Imports: 
+    Rcpp

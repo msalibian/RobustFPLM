@@ -3,7 +3,7 @@
 ##
 
 ##          library('robustbase') # lmrob
-## source('R/FPLMBsplines.R')
+source('R/FPLMBsplines.R')
 
 ## Load data
 library(fda.usc) 
