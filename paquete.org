@@ -1,7 +1,0 @@
-* Armar directorios
-
-* Documentacion
-
-* Cpp?
-
-* imports?
