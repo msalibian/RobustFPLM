@@ -13,7 +13,7 @@
 #'
 #' @return list(fit = fit_opt, spl = spl_opt, freq = freq_opt, u, t)
 #'
-#' @examples Bla
+#' @examples List
 #'
 #' @export
 FPLMBsplines <- function (y, x, u, t, range_freq = range_default,
