@@ -55,7 +55,6 @@ that to compute the robust estimators for the FPLM model we need the
 
 ``` r
 library("robustbase")  # lmrob
-source("FPLM-Bsplines-functions.R")
 ```
 
 Next, we load the `tecator` data from the `fda.usc` package and extract
