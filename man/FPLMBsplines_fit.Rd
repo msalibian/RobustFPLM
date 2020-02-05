@@ -13,8 +13,7 @@ FPLMBsplines_fit(y, x, u, t, freq, spl, norder, fLoss)
 
 \item{u}{vector of n observations for g(u_i)}
 
-\item{t}{vector of "times" where X was observed
-"x[i, j] = X_i( t_j )"}
+\item{t}{vector of "times" where X was observed "x[i, j] = X_i( t_j )"}
 
 \item{freq}{description}
 
@@ -22,8 +21,7 @@ FPLMBsplines_fit(y, x, u, t, freq, spl, norder, fLoss)
 
 \item{norder}{description}
 
-\item{fLoss}{loss function / method to use, valid options: 'ls',
-'lad', 'lmrob', 'huang'.}
+\item{fLoss}{loss function to be minimize (see Details)}
 }
 \value{
 A list including several.
@@ -31,8 +29,12 @@ A list including several.
 \description{
 FPLM fit with splines
 }
+\details{
+Valid options for the loss function are 'ls', 'lad', 'lmrob', 'huang'.
+}
 \examples{
 Example.
+
 }
 \references{
 Paper

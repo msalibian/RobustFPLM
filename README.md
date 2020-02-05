@@ -1,3 +1,7 @@
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.org/anevolbap/RobustFPLM.svg?branch=master)](https://travis-ci.org/anevolbap/RobustFPLM)
+<!-- badges: end -->
+  
 Robust estimators for Functional Partial Linear Models
 ================
 Matias Salibian-Barrera

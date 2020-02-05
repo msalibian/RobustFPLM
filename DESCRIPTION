@@ -9,15 +9,12 @@ Description: This repository contains R code to compute the robust
     MM-estimators for Functional Partial Linear models in Boente,
     Salibian-Barrera, Vena (2019).
 Depends: R (>= 3.1.0), robustbase, fda
-Suggests: 
-    fda.usc,
-    testthat (>= 2.1.0)
+VignetteBuilder: knitr
+Suggests: fda.usc, knitr, rmarkdown, testthat (>= 2.1.0)
 License: GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.0.2
 LinkingTo: 
-    Rcpp,
-    RcppArmadillo
+    Rcpp, RcppArmadillo
 Imports: 
-    Rcpp,
-    RcppArmadillo
+    Rcpp, RcppArmadillo

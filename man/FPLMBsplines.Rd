@@ -2,7 +2,7 @@
 % Please edit documentation in R/FPLMBsplines.R
 \name{FPLMBsplines}
 \alias{FPLMBsplines}
-\title{Best FPLMBsplines fit by criterion.}
+\title{Best FPLMBsplines_fit given by a model selection criterion.}
 \usage{
 FPLMBsplines(
   y,
@@ -18,33 +18,64 @@ FPLMBsplines(
 )
 }
 \arguments{
-\item{y}{response}
+\item{y}{the vector of scalar responses.}
 
-\item{x}{description}
+\item{x}{a matrix of the functional covariates, where each row contains the
+functions evaluated on a (common) grid.}
 
-\item{u}{description}
+\item{u}{the values of the explanatory variable that enters the model
+non-parametrically.}
 
-\item{t}{description}
+\item{t}{the grid over which the functional covariates were evaluated.}
 
-\item{range_freq}{description}
+\item{range_freq}{a vector of B-spline basis sizes to try for the functional
+regression coefficient.}
 
-\item{range_spl}{description}
+\item{range_spl}{a vector of B-spline basis sizes to try for the
+non-parametric component.}
 
-\item{norder}{Order of the splines.}
+\item{norder}{the order of the B-Splines.}
 
-\item{fLoss}{Loss function}
+\item{fLoss}{loss function to be minimized.}
 
-\item{criterion}{Criterion for model selection}
+\item{criterion}{criterion for model selection.}
 
-\item{trace}{Logical.}
+\item{trace}{a logical argument indicating whether partial results are
+printed.}
 }
 \value{
-list(fit = fit_opt, spl = spl_opt, freq = freq_opt, u, t)
+A list including the following components:
+\itemize{
+\item{fit}{fitted parameters}
+\item{spl}{chosen number of splines for the non-parametric component}
+\item{freq}{chosen number of splines for the funcitonal regression coefficient}
+}
 }
 \description{
-Best FPLMBsplines fit by criterion.
+Fit a FPLM model for different spline basis sizes and picks the
+    best one according to a specified model selection criterion.
+}
+\details{
+Add some details regarding the criteria, valid ranges (asympotics)
+    and floss options
 }
 \examples{
-Bla
 
+n <- 100
+m <- 50
+u <- runif(n)
+t <- runif(m)
+b <- function(x) x^3
+g <- function(x) sin(x)
+x <- matrix(rnorm(n * m), nrow = n)
+y <- x \%*\% b(t) * min(diff(t)) + g(u) + rnorm(n, sd = 0.1)
+
+FPLM_fit <- FPLMBsplines(y, x, u, t,
+  range_freq = 4:13, range_spl = 4:13,
+  norder = 4, fLoss = "ls", criterion = "bic1", trace = FALSE
+)
+
+par(mfrow = c(2, 1))
+plot(t, FPLM_fit$fit$slope_fun, pch = 16)
+plot(u, FPLM_fit$fit$eta_est, pch = 16)
 }

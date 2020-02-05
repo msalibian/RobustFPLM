@@ -2,7 +2,7 @@
 % Please edit documentation in R/minimize.R
 \name{minimize}
 \alias{minimize}
-\title{Minimization rutine'}
+\title{Minimization rutine}
 \usage{
 minimize(
   yy,
