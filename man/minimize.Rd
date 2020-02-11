@@ -12,7 +12,6 @@ minimize(
   freq,
   fLoss,
   norder,
-  pars,
   rob.control = lmrob.control(trace.level = 0, nResample = 5000, tuning.psi = 3.443689,
     subsampling = "simple", rel.tol = 1e-05, refine.tol = 1e-05, k.max = 2000, maxit.scale
     = 2000, max.it = 2000)
@@ -32,8 +31,6 @@ minimize(
 \item{fLoss}{description}
 
 \item{norder}{description}
-
-\item{pars}{description}
 
 \item{rob.control}{description}
 }

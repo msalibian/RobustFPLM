@@ -1,3 +1,8 @@
 ^\.travis\.yml$
 ^doc$
 ^Meta$
+FPLM-Bsplines-example.R
+README.Rmd
+README_files
+script-TECATOR.R
+tecator-specific-functions.R

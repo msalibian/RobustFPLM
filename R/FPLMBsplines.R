@@ -29,6 +29,7 @@
 #' }
 #' @examples
 #'
+#' # Synthetic data
 #' n <- 100
 #' m <- 50
 #' u <- runif(n)
@@ -38,14 +39,19 @@
 #' x <- matrix(rnorm(n * m), nrow = n)
 #' y <- x %*% b(t) * min(diff(t)) + g(u) + rnorm(n, sd = 0.1)
 #'
+#' # Best FPLM fit
 #' FPLM_fit <- FPLMBsplines(y, x, u, t,
 #'   range_freq = 4:13, range_spl = 4:13,
 #'   norder = 4, fLoss = "ls", criterion = "bic1", trace = FALSE
 #' )
 #'
+#' # Plot the estimates
 #' par(mfrow = c(2, 1))
 #' plot(t, FPLM_fit$fit$slope_fun, pch = 16)
 #' plot(u, FPLM_fit$fit$eta_est, pch = 16)
+#'
+#' @import fda robustbase
+#' 
 #' @export
 FPLMBsplines <- function(y, x, u, t, range_freq = range_default,
                          range_spl = range_default, norder = 4,
@@ -55,7 +61,7 @@ FPLMBsplines <- function(y, x, u, t, range_freq = range_default,
     ## Some Setup
     opt <- spl_opt <- freq_opt <- fit_opt <- Inf
     n <- length(y)
-    range_freq <- range_spl <- floor(max(n^(1 / 5), norder)):
+    range_default <- floor(max(n^(1 / 5), norder)):
         floor(2 * (norder + n^(1 / 5)))
 
     ## Double loop

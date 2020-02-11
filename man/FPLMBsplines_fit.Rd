@@ -33,7 +33,7 @@ FPLM fit with splines
 Valid options for the loss function are 'ls', 'lad', 'lmrob', 'huang'.
 }
 \examples{
-Example.
+# Example.
 
 }
 \references{

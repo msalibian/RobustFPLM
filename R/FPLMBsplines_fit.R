@@ -3,7 +3,6 @@
 #' @description
 #' FPLM fit with splines
 #'
-#' 
 #' @param y vector of n responses
 #' @param x matrix of functional covariates (n x p_1)
 #' @param u vector of n observations for g(u_i)
@@ -18,7 +17,9 @@
 #' Valid options for the loss function are 'ls', 'lad', 'lmrob', 'huang'.
 #' 
 #' @examples
-#' Example.
+#' # Example.
+#'
+#' @import fda robustbase
 #' 
 #' @references Paper
 #' @export
@@ -46,7 +47,7 @@ FPLMBsplines_fit <- function(y, x, u, t, freq, spl, norder, fLoss) {
     ## Parameter estimation
     est <- minimize(
         y, xx_coef, u, spl, freq, fLoss,
-        norder, pars
+        norder
     )
 
     est$slope_fun <- cov_dec %*% est$slope

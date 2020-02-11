@@ -11,12 +11,15 @@
 #' @param freq description
 #' @param fLoss description
 #' @param norder description
-#' @param pars description
 #' @param rob.control description
 #'
 #' @return Minimization stuff
+#'
+#' @import fda robustbase
+#' @importFrom stats lm
+#' 
 #' @export
-minimize <- function(yy, xx_coef, uu, spl_kn, freq, fLoss, norder, pars,
+minimize <- function(yy, xx_coef, uu, spl_kn, freq, fLoss, norder,
                      rob.control = lmrob.control(
                          trace.level = 0, # 0
                          nResample = 5000, # 500 default
