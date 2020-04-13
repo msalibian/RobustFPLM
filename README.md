@@ -1,3 +1,7 @@
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.org/anevolbap/RobustFPLM.svg?branch=package)](https://travis-ci.org/anevolbap/RobustFPLM)
+<!-- badges: end -->
+  
 Robust estimators for Functional Partial Linear Models
 ================
 Matias Salibian-Barrera
@@ -51,7 +55,6 @@ that to compute the robust estimators for the FPLM model we need the
 
 ``` r
 library("robustbase")  # lmrob
-source("FPLM-Bsplines-functions.R")
 ```
 
 Next, we load the `tecator` data from the `fda.usc` package and extract

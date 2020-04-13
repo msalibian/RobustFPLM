@@ -1,0 +1,10 @@
+n = 100
+ret = FPLMBsplines(y = rnorm(n),
+                   x = matrix(rnorm(n * p), n, p),
+                   u = runif(0,1),
+                   t = runif(0,1),
+                   range_freq = 4:6,
+                   range_spl = 4:6,
+                   norder = 4,
+                   fLoss = "lmrob"
+                   criterion = "bic1")
