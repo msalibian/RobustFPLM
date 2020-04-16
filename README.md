@@ -4,6 +4,8 @@
   
 Robust estimators for Functional Partial Linear Models
 ================
+## Overview
+
 Matias Salibian-Barrera
 2019-07-30
 
@@ -11,7 +13,15 @@ This repository contains `R` code to compute the robust MM-estimators
 for Functional Partial Linear models in Boente, Salibian-Barrera, Vena
 (2019). Original code by [Pablo Vena](https://github.com/anevolbap).
 
-### Tecator example
+## Installation
+
+``` r
+# Development version from GitHub:
+# install.packages("devtools")
+devtools::install_github("msalibian/RobustFPLM")
+```
+
+## Tecator example
 
 Because the regression model of the Tecator data includes an interaction
 between the non-parametric term `g` and a scalar covariate `w`

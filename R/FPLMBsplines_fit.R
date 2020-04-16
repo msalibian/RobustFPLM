@@ -3,25 +3,30 @@
 #' @description
 #' FPLM fit with splines
 #'
-#' @param y vector of n responses
-#' @param x matrix of functional covariates (n x p_1)
-#' @param u vector of n observations for g(u_i)
-#' @param t vector of "times" where X was observed "x[i, j] = X_i( t_j )"
-#' @param freq description
-#' @param spl description
-#' @param norder description
-#' @param fLoss loss function to be minimize (see Details)
-#' @return A list including several.
+#' @param y the vector of scalar responses.
+#' @param x a matrix of the functional covariates, where each row contains the
+#'     functions evaluated on a (common) grid.
+#' @param u the values of the explanatory variable that enters the model
+#'     non-parametrically.
+#' @param t the grid over which the functional covariates were evaluated.
+#' @param freq basis size for the functional regression coefficient.
+#' @param spl basis size for the non-parametric component.
+#' @param norder the order of the B-Splines.
+#' @param fLoss string specifying the loss function. 'ls' for least squares,
+#'     'huang' for Huber, 'lmbrob' for MM-estimator.
 #'
-#' @details
-#' Valid options for the loss function are 'ls', 'lad', 'lmrob', 'huang'.
-#' 
-#' @examples
-#' # Example.
+#' @return A list with components:
+#' \itemize{
+#'   \item{spl}{estimated coefficients for the non parametric term},
+#'   \item{slope}{estimated coefficients for the functional slope},
+#'   \item{value}{the minimum value of the loss},
+#'   \item{scale}{the scale estimate},
+#'   \item{slope_fun}{functional slope estimate}.
+#' }
 #'
 #' @import fda robustbase
 #' 
-#' @references Paper
+#' @references Pending.
 #' @export
 FPLMBsplines_fit <- function(y, x, u, t, freq, spl, norder, fLoss) {
 

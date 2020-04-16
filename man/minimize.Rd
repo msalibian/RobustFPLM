@@ -18,24 +18,31 @@ minimize(
 )
 }
 \arguments{
-\item{yy}{description}
+\item{yy}{response.}
 
-\item{xx_coef}{description}
+\item{xx_coef}{covariates coefficients.}
 
-\item{uu}{description}
+\item{uu}{values for thenon parametric term.}
 
-\item{spl_kn}{description}
+\item{spl_kn}{number of splines for the non parametric term.}
 
-\item{freq}{description}
+\item{freq}{number of splines for the functional term.}
 
-\item{fLoss}{description}
+\item{fLoss}{string specifying the loss function. 'ls' for least squares,
+'huang' for Huber, 'lmbrob' for MM-estimator.}
 
-\item{norder}{description}
+\item{norder}{spline order (n=4 for cubic splines)}
 
-\item{rob.control}{description}
+\item{rob.control}{optional parameters if \code{fLoss == 'lmbrob'}.}
 }
 \value{
-Minimization stuff
+A vector with components:
+\itemize{
+  \item{spl} estimate for the non parametric term,
+  \item{slope} estimate for the functional slope,
+  \item{value} the minimum value of the loss
+  \item{scale} the scale estimate. 
+}
 }
 \description{
 This function is used internally by FPLMBsplines(), not meant

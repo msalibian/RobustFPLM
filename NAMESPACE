@@ -3,7 +3,6 @@
 export(FPLMBsplines)
 export(FPLMBsplines_fit)
 export(goodness)
-export(minimize)
 import(fda)
 import(robustbase)
 importFrom(Rcpp,sourceCpp)

@@ -13,14 +13,12 @@
 #' @param range_spl a vector of B-spline basis sizes to try for the
 #'     non-parametric component.
 #' @param norder the order of the B-Splines.
-#' @param fLoss loss function to be minimized.
+#' @param fLoss string specifying the loss function. 'ls' for least squares,
+#'     'huang' for Huber, 'lmbrob' for MM-estimator.
 #' @param criterion criterion for model selection.
 #' @param trace a logical argument indicating whether partial results are
 #'     printed.
-#'
-#' @details Add some details regarding the criteria, valid ranges (asympotics)
-#'     and floss options
-#'
+#'     
 #' @return A list including the following components:
 #' \itemize{
 #' \item{fit}{fitted parameters}
