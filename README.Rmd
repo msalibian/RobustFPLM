@@ -8,10 +8,9 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, tidy=TRUE)
 ```
-
 This repository contains `R` code to compute the robust MM-estimators 
 for Functional Partial Linear models in 
-[Boente G, Salibian-Barrera M, Vena P. Robust estimation for semi-functional linear regression models. To appear in *Computational Statistics and Data Science*](https://github.com/anevolbap). 
+[Boente G, Salibian-Barrera M, Vena P. Robust estimation for semi-functional linear regression models. To appear in *Computational Statistics and Data Science*](https://github.com/msalibian/RobustFPLM). 
 Original code by [Pablo Vena](https://github.com/anevolbap).
 
 #### Installing the `RobustFPLM` package for `R`
@@ -186,3 +185,5 @@ robust estimator results in a fit that is intuitively equivalent to using
 LS on a ``cleaned'' data set. However, the robust procedure accomplishes this
 automatically, and does not involve diagnostic plots or manually
 removing observations from the data set. 
+
+<!-- <!-- badges: start --> [![Travis build status](https://travis-ci.org/anevolbap/RobustFPLM.svg?branch=package)](https://travis-ci.org/anevolbap/RobustFPLM) <!-- badges: end --> -->
