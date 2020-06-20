@@ -6,3 +6,5 @@ README.Rmd
 README_files
 script-TECATOR.R
 tecator-specific-functions.R
+^.*\.Rproj$
+^\.Rproj\.user$

@@ -10,8 +10,18 @@ knitr::opts_chunk$set(echo = TRUE, tidy=TRUE)
 ```
 
 This repository contains `R` code to compute the robust MM-estimators 
-for Functional Partial Linear models in Boente, Salibian-Barrera, Vena (2019).
+for Functional Partial Linear models in 
+[Boente G, Salibian-Barrera M, Vena P. Robust estimation for semi-functional linear regression models. To appear in *Computational Statistics and Data Science*](https://github.com/anevolbap). 
 Original code by [Pablo Vena](https://github.com/anevolbap).
+
+#### Installing the `RobustFPLM` package for `R`
+
+The package can be installed directly from this repository using the 
+following command in `R`:
+```{r install, eval=FALSE}
+devtools::install_github('msalibian/RobustFPLM', ref = "master")
+```
+
 
 ### Tecator example
 Because the regression model of the Tecator data includes an 
@@ -60,8 +70,7 @@ Note that to compute the robust estimators for the FPLM model we
 need the [robustbase](https://cran.r-project.org/package=robustbase)
 package. 
 ```{r loadfunc, message=FALSE, warning=FALSE}
-library('robustbase') # lmrob
-source('FPLM-Bsplines-functions.R')
+library(RobustFPLM)
 ```
 Next, we load the `tecator` data 
 from the `fda.usc` package and 
