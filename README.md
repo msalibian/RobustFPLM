@@ -1,17 +1,13 @@
-<!-- badges: start --> 
-[![Travis build status](https://travis-ci.org/anevolbap/RobustFPLM.svg?branch=package)](https://travis-ci.org/anevolbap/RobustFPLM) 
-<!-- badges: end -->
-
 Robust estimators for Functional Partial Linear Models
 ================
 Matias Salibian-Barrera
-2020-06-20
+2020-06-29
 
 This repository contains `R` code to compute the robust MM-estimators
 for Functional Partial Linear models in [Boente G, Salibian-Barrera M,
 Vena P. Robust estimation for semi-functional linear regression models.
 To appear in *Computational Statistics and Data
-Science*](https://github.com/msalibian/RobustFPLM). Original code by
+Science*](https://doi.org/10.1016/j.csda.2020.107041). Original code by
 [Pablo Vena](https://github.com/anevolbap).
 
 #### Installing the `RobustFPLM` package for `R`
